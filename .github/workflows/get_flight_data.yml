@@ -1,0 +1,30 @@
+name: Get flight data
+run-name: Get flight data from api
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  push:
+    branches:
+      - main
+jobs:
+  Get-Data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          python -m pip install requests
+      - name: Run the Python script
+        run: |
+          python request.py
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Change
+          commit_options: "--no-verify --signoff"
+          repository: .
+          commit_user_name: My GitHub Actions Bot # defaults to "github-actions[bot]"
+          commit_user_email: my-github-actions-bot@example.org # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: Author <actions@github.com> # defaults to author of the commit that triggered the run
+          push_options: "--force"
